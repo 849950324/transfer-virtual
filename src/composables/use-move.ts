@@ -1,4 +1,4 @@
-import { CHANGE_EVENT, UPDATE_MODEL_EVENT } from 'element-plus'
+import { CHANGE_EVENT, UPDATE_MODEL_EVENT } from '@element-plus/constants'
 import { usePropsAlias } from './use-props-alias'
 
 import type { SetupContext } from 'vue'
@@ -51,35 +51,8 @@ export const useMove = (
 }
 
 const addToRight = () => {
-  let currentValue = props.modelValue.slice()
-
-  const itemsToBeMoved = props.data
-    .filter((item: TransferDataItem) => {
-      const itemKey = item[propsAlias.value.key]
-      return (
-        checkedState.leftChecked.includes(itemKey) &&
-        !props.modelValue.includes(itemKey)
-      )
-    })
-    .map((item) => item[propsAlias.value.key])
-
-  currentValue =
-    props.targetOrder === 'unshift'
-      ? itemsToBeMoved.concat(currentValue)
-      : currentValue.concat(itemsToBeMoved)
-
-  if (props.targetOrder === 'original') {
-    currentValue = props.data
-      .filter((item) => currentValue.includes(item[propsAlias.value.key]))
-      .map((item) => item[propsAlias.value.key])
-  }
-
-  _emit(currentValue, 'right', checkedState.leftChecked)
-}
-/*
-const addToRight = () => {
   // 明确类型
-  let currentValue: TransferKey[] = props.modelValue.slice();
+  let currentValue: string[] = props.modelValue.slice();
 
   // 创建一个 Set 用于快速查找
   const modelValueSet = new Set(props.modelValue);
@@ -107,7 +80,6 @@ const addToRight = () => {
   // 发送更新后的值
   _emit(currentValue, 'right', checkedState.leftChecked);
 }
-*/
   return {
     addToLeft,
     addToRight,

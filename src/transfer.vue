@@ -54,13 +54,12 @@
 </template>
 
 <script lang="ts" setup>
-
-
 import { computed, h, reactive, ref, useSlots, watch } from 'vue'
-import { debugWarn, isEmpty, isUndefined } from 'element-plus/es/utils/index';
-import { useLocale, useNamespace ,useFormItem ,} from 'element-plus';
-// import { ElButton } from 'element-plus/es/components/button'
-// import { ElIcon } from 'element-plus/es/components/icon'
+import { debugWarn, isEmpty, isUndefined } from '@element-plus/utils'
+import { useLocale, useNamespace } from '@element-plus/hooks'
+import { ElButton } from '@element-plus/components/button'
+import { ElIcon } from '@element-plus/components/icon'
+import { useFormItem } from '@element-plus/components/form'
 import { ArrowLeft, ArrowRight } from '@element-plus/icons-vue'
 import { transferEmits, transferProps } from './transfer'
 import {

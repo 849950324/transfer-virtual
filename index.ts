@@ -1,4 +1,4 @@
-import { withInstall } from 'element-plus/es/utils/index'
+import { withInstall } from '@element-plus/utils'
 
 import Transfer from './src/transfer.vue'
 
