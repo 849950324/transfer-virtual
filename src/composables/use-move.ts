@@ -1,4 +1,4 @@
-import { CHANGE_EVENT, UPDATE_MODEL_EVENT } from '@element-plus/constants'
+import { CHANGE_EVENT, UPDATE_MODEL_EVENT } from 'element-plus'
 import { usePropsAlias } from './use-props-alias'
 
 import type { SetupContext } from 'vue'
@@ -51,35 +51,61 @@ export const useMove = (
 }
 
 const addToRight = () => {
-  // 明确类型
-  let currentValue: string[] = props.modelValue.slice();
-
-  // 创建一个 Set 用于快速查找
-  const modelValueSet = new Set(props.modelValue);
+  let currentValue = props.modelValue.slice()
+  // 将数组转换为集合以加快查找速度
   const leftCheckedSet = new Set(checkedState.leftChecked);
-
-  // 筛选出要移动的项
-  const itemsToBeMoved = props.data
-    .filter((item: TransferDataItem): boolean => {
-      const itemKey = item[propsAlias.value.key] as string;
+  const modelValueSet = new Set(props.modelValue);
+    // 筛选和映射需要移动的items
+    const itemsToBeMoved = props.data
+    .filter((item: TransferDataItem) => {
+      // 确保密钥存在于项目中
+      const itemKey = item[propsAlias.value.key];
+      // 检查item是否已被选中，并且尚未在目标列表中
       return leftCheckedSet.has(itemKey) && !modelValueSet.has(itemKey);
     })
-    .map((item) => item[propsAlias.value.key] as string);
+    .map((item: TransferDataItem) => item[propsAlias.value.key]);
 
-  // 更新 currentValue
-  if (props.targetOrder === 'unshift') {
-    currentValue.unshift(...itemsToBeMoved);
-  } else if (props.targetOrder === 'push') {
-    currentValue.push(...itemsToBeMoved);
-  } else if (props.targetOrder === 'original') {
+  currentValue =
+    props.targetOrder === 'unshift'
+      ? itemsToBeMoved.concat(currentValue)
+      : currentValue.concat(itemsToBeMoved)
+
+  if (props.targetOrder === 'original') {
+    const currentValueSet = new Set(currentValue);
     currentValue = props.data
-      .filter((item) => modelValueSet.has(item[propsAlias.value.key] as string))
-      .map((item) => item[propsAlias.value.key] as string);
+     .filter((item) => currentValueSet.has(item[propsAlias.value.key]))
+     .map((item) => item[propsAlias.value.key]);
   }
 
-  // 发送更新后的值
-  _emit(currentValue, 'right', checkedState.leftChecked);
+  _emit(currentValue, 'right', checkedState.leftChecked)
 }
+// const addToRight = () => {
+//   let currentValue = props.modelValue.slice()
+
+//   const itemsToBeMoved = props.data
+//     .filter((item: TransferDataItem) => {
+//       const itemKey = item[propsAlias.value.key]
+//       return (
+//         checkedState.leftChecked.includes(itemKey) &&
+//         !props.modelValue.includes(itemKey)
+//       )
+//     })
+//     .map((item) => item[propsAlias.value.key])
+
+//   currentValue =
+//     props.targetOrder === 'unshift'
+//       ? itemsToBeMoved.concat(currentValue)
+//       : currentValue.concat(itemsToBeMoved)
+
+//   if (props.targetOrder === 'original') {
+//     currentValue = props.data
+//       .filter((item) => currentValue.includes(item[propsAlias.value.key]))
+//       .map((item) => item[propsAlias.value.key])
+//   }
+
+//   _emit(currentValue, 'right', checkedState.leftChecked)
+// }
+
   return {
     addToLeft,
     addToRight,

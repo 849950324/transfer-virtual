@@ -10,30 +10,44 @@ export const useComputedData = (props: TransferProps) => {
     props.data.reduce((o, cur) => (o[cur[propsAlias.value.key]] = cur) && o, {})
   )
 
-  const sourceData = computed(() =>
-    props.data.filter(
-      (item) => !props.modelValue.includes(item[propsAlias.value.key])
-    )
-  )
+  // 创建一个Set用于快速查找
+  const modelValueSet = computed(() => new Set(props.modelValue));
 
+  // 过滤函数
+  const sourceData = computed(() => {
+    if (!Array.isArray(props.data)) return [];
+
+    return props.data.filter((item) => {
+      if (typeof item !== 'object' || item === null) return false;
+      const key = propsAlias.value.key;
+      if (key === undefined || typeof key !== 'string') return false;
+
+      const value = item[key];
+      return !modelValueSet.value.has(value);
+    });
+  });
+
+  // 过滤函数
   const targetData = computed(() => {
     if (props.targetOrder === 'original') {
-      return props.data.filter((item) =>
-        props.modelValue.includes(item[propsAlias.value.key])
-      )
+      return props.data.filter((item) => {
+        const key = propsAlias.value.key;
+        const value = item[key];
+        return modelValueSet.value.has(value);
+      });
     } else {
       return props.modelValue.reduce(
-        (arr: TransferDataItem[], cur: TransferKey) => {
-          const val = dataObj.value[cur]
+        (arr, cur) => {
+          const val = props.dataObj.value[cur];
           if (val) {
-            arr.push(val)
+            arr.push(val);
           }
-          return arr
+          return arr;
         },
         []
-      )
+      );
     }
-  })
+  });
 
   return {
     sourceData,

@@ -1,11 +1,11 @@
-import { isNil } from 'lodash-unified'
+import { isNil } from 'lodash'
 import {
   buildProps,
   definePropType,
   isArray,
   mutable,
-} from '@element-plus/utils'
-import { CHANGE_EVENT, UPDATE_MODEL_EVENT } from '@element-plus/constants'
+} from 'element-plus/es/utils/index'
+import { CHANGE_EVENT, UPDATE_MODEL_EVENT } from 'element-plus'
 
 import type { ExtractPropTypes, h as H, VNode } from 'vue'
 import type Transfer from './transfer.vue'
@@ -140,7 +140,7 @@ export const transferProps = buildProps({
   },
   itemSize: {
     type: Number,
-    default: 30,
+    default: 40,
   },
   height: {
     type: Number,

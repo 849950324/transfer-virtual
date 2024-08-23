@@ -29,25 +29,26 @@
         v-model="checked"
         :validate-event="false"
         :class="[ns.is('filterable', filterable), ns.be('panel', 'list')]"
+        style="overflow: hidden;"
       >  
         <!-- 虚拟化列表 -->
         <fixed-size-list
           :class-name="ns.b('virtual-list')"
           :data="filteredData"
+          containerElement="label"
           :total="filteredData.length"
           :height="height"
           :item-size="itemSize"
         >
-          <template #default="{ data, index, style }">
+          <template #default="{ data , index }">
             <el-checkbox
-              v-for="item in data"
-              :key="item[propsAlias.key]"
+              :key="data[index][propsAlias.key]"
               :class="ns.be('panel', 'item')"
-              :label="item[propsAlias.key]"
-              :disabled="item[propsAlias.disabled]"
+              :label="data[index][propsAlias.key]"
+              :disabled="data[index][propsAlias.disabled]"
               :validate-event="false"
             >
-              <option-content :option="optionRender?.(item)" />
+              <option-content :option="optionRender?.(data[index])" />
             </el-checkbox>
           </template>
         </fixed-size-list>
@@ -64,14 +65,13 @@
 
 <script lang="ts" setup>
 import { computed, reactive, toRefs, useSlots } from 'vue'
-import { isEmpty } from '@element-plus/utils'
-import { useLocale, useNamespace } from '@element-plus/hooks'
-import { ElCheckbox, ElCheckboxGroup } from '@element-plus/components/checkbox'
-import { ElInput } from '@element-plus/components/input'
+import { isEmpty } from 'element-plus/es/utils/index'
+import { useLocale, useNamespace ,FixedSizeList ,ElCheckbox ,ElCheckboxGroup ,ElInput } from 'element-plus'
+// import { ElCheckbox, ElCheckboxGroup } from 'element-plus/es/components/checkbox'
+// import { ElInput } from 'element-plus/es/components/input'
 import { Search } from '@element-plus/icons-vue'
 import { transferPanelEmits, transferPanelProps } from './transfer-panel'
 import { useCheck, usePropsAlias } from './composables'
-import { FixedSizeList } from '@element-plus/components/virtual-list'
 
 import type { VNode } from 'vue'
 import type { TransferPanelState } from './transfer-panel'

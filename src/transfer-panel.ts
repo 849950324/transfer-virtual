@@ -1,4 +1,4 @@
-import { buildProps, definePropType } from '@element-plus/utils'
+import { buildProps, definePropType } from 'element-plus/es/utils/index'
 import { transferCheckedChangeFn, transferProps } from './transfer'
 
 import type { ExtractPropTypes, VNode } from 'vue'
@@ -28,6 +28,9 @@ export const transferPanelProps = buildProps({
   filterMethod: transferProps.filterMethod,
   defaultChecked: transferProps.leftDefaultChecked,
   props: transferProps.props,
+  itemSize: transferProps.itemSize,
+  height: transferProps.height,
+
 } as const)
 export type TransferPanelProps = ExtractPropTypes<typeof transferPanelProps>
 
