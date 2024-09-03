@@ -11,4 +11,6 @@
 2.基于通已灵码优化部分代码，主要涉及文件use-check、use-computed-data、use-move
 
 
+## 优化后插件地址：https://github.com/849950324/transfer-virtual.git
+## 代码示例：https://github.com/849950324/transfer-demo.git
 
